@@ -76,9 +76,18 @@ class WeiboWeCodeBridge {
   }
 
   async handleWeiboMessage(msg) {
-    const { payload } = msg;
-    const fromUserId = payload.fromUserId;
-    const text = payload.text;
+    // 打印完整消息以便调试
+    console.log('📨 Full message:', JSON.stringify(msg, null, 2));
+
+    // 适配多种消息格式
+    const payload = msg.payload || msg.data || msg;
+    const fromUserId = payload.fromUserId || payload.from_user_id || payload.senderId || payload.sender_id || 'unknown';
+    const text = payload.text || payload.content || payload.message || payload.msg || '';
+
+    if (!text || text.trim() === '') {
+      console.log('⚠️ Empty message, skipping');
+      return;
+    }
 
     console.log(`📨 Message from ${fromUserId}: ${text.substring(0, 50)}...`);
 
