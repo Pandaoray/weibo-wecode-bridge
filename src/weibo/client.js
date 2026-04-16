@@ -97,13 +97,21 @@ export class WeiboClient {
   }
 
   handleMessage(data) {
+    const rawData = data.toString();
+
+    // 处理纯文本 pong 响应
+    if (rawData === 'pong' || rawData === '"pong"') {
+      // console.log('💓 Heartbeat pong received');
+      return;
+    }
+
     try {
-      const msg = JSON.parse(data.toString());
+      const msg = JSON.parse(rawData);
 
       // 调试：打印原始消息
       console.log('📩 Raw message:', JSON.stringify(msg).substring(0, 300));
 
-      // 心跳响应
+      // 心跳响应 (JSON 格式)
       if (msg.type === 'pong') {
         return;
       }
@@ -137,7 +145,7 @@ export class WeiboClient {
       this.messageCallbacks.forEach(cb => cb(msg));
 
     } catch (err) {
-      console.error('❌ Failed to parse message:', err.message);
+      console.error('❌ Failed to parse message:', err.message, '| Raw:', rawData.substring(0, 100));
     }
   }
 
@@ -185,15 +193,18 @@ export class WeiboClient {
       return this.sendChunks(userId, text, maxLen);
     }
 
+    // 根据微博 API，消息格式需要匹配接收到的格式
     const msg = {
       type: 'message',
-      to: userId,
       payload: {
+        toUserId: userId,
         text: text,
       },
     };
 
+    console.log(`📤 Sending to ${userId}: ${text.substring(0, 50)}...`);
     this.ws.send(JSON.stringify(msg));
+    console.log(`✅ Message sent successfully`);
   }
 
   async sendChunks(userId, text, chunkSize) {

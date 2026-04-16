@@ -1,9 +1,9 @@
 # cc-connect 配置文件
 language = "zh"
-data_dir = "/home/ubuntu/.cc-connect"
+data_dir = "/Users/haorui/.cc-connect"
 
 [log]
-level = "info"
+level = "debug"
 
 [[projects]]
 name = "AI"
@@ -12,7 +12,7 @@ name = "AI"
 type = "claudecode"
 
 [projects.agent.options]
-work_dir = "/home/ubuntu/workspace"
+work_dir = "/Users/haorui/workspace"
 mode = "default"
 provider = "wecode"
 
@@ -26,8 +26,8 @@ base_url = "http://127.0.0.1:3456"
 type = "weibo"
 
 [projects.platforms.options]
-app_id = "5288388166418433"
-app_secret = "0e2925708f3d09d9f59397737c75432d6683f72edf0d93bf398937254e713a01"
+app_id = "5288417333608449"
+app_secret = "dcccd6cfca5d43bdfa81fca8fea490458358995eeed717b44a2379e38ae0a509"
 token_url = "http://open-im.api.weibo.com/open/auth/ws_token"
 ws_url = "ws://open-im.api.weibo.com/ws/stream"
 allow_from = "*"
